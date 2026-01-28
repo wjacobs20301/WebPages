@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Cameras</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            height: 100%;
+        }
+        
+        body {
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(3, 33.33vh);
+            gap: 0;
+        }
+        
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+        }
+    </style>
+</head>
+<body>
+    <!-- Row 1 -->
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/292.jpg" alt="Camera 292">
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/293.jpg" alt="Camera 293">
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/291.jpg" alt="Camera 291">
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/289.jpg" alt="Camera 289">
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/288.jpg" alt="Camera 288">
+    
+    <!-- Row 2 -->
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/294.jpg" alt="Camera 294">
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/295.jpg" alt="Camera 295">
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/296.jpg" alt="Camera 296">
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/297.jpg" alt="Camera 297">
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/298.jpg" alt="Camera 298">
+    
+    <!-- Row 3 -->
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/299.jpg" alt="Camera 299">
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/300.jpg" alt="Camera 300">
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/301.jpg" alt="Camera 301">
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/302.jpg" alt="Camera 302">
+    <img src="https://images.drivebc.ca/bchighwaycam/pub/cameras/303.jpg" alt="Camera 303">
+    
+    <script>
+        setInterval(() => {
+            document.querySelectorAll('img').forEach(img => {
+                img.src = img.src.split('?')[0] + '?t=' + Date.now();
+            });
+        }, 30000);
+    </script>
+</body>
+</html>
