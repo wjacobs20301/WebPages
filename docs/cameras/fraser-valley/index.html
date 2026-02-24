@@ -179,6 +179,7 @@
             font-family: 'Courier New', monospace;
         }
 
+        /* Fullscreen overlay */
         .overlay {
             display: none;
             position: fixed;
@@ -188,41 +189,85 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            gap: 12px;
             cursor: zoom-out;
         }
         .overlay.active { display: flex; }
-        .overlay img {
-            max-width: 92vw;
-            max-height: 80vh;
-            border-radius: 8px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.6);
+
+        .overlay-content {
+            width: 80vw;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            cursor: default;
         }
+
+        .overlay-header {
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #133538, #0f2a30);
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .overlay-header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
         .overlay-title {
             color: #fff;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 600;
         }
+
         .overlay-sub {
             color: #0fb5b5;
-            font-size: 0.85rem;
-            margin-top: -6px;
+            font-size: 0.8rem;
         }
+
         .overlay-close {
-            position: absolute;
-            top: 14px; right: 22px;
             color: #fff;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             cursor: pointer;
             background: rgba(14,140,140,0.2);
-            width: 40px; height: 40px;
+            width: 38px; height: 38px;
             display: flex; align-items: center; justify-content: center;
             border-radius: 50%;
+            flex-shrink: 0;
         }
         .overlay-close:hover { background: rgba(14,140,140,0.4); }
-        .overlay-nav { display: flex; gap: 8px; }
-        .overlay-nav button {
-            padding: 7px 18px;
+
+        .overlay-img-wrap {
+            width: 100%;
+            background: #081418;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .overlay-img-wrap img {
+            width: 100%;
+            display: block;
+        }
+
+        .overlay-footer {
+            width: 100%;
+            padding: 10px 20px;
+            background: #112a30;
+            border-radius: 0 0 10px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .overlay-footer button {
+            padding: 8px 24px;
             background: rgba(14,140,140,0.15);
             color: #fff;
             border: 1px solid rgba(14,140,140,0.3);
@@ -231,7 +276,14 @@
             font-size: 0.85rem;
             transition: background 0.2s;
         }
-        .overlay-nav button:hover { background: rgba(14,140,140,0.3); }
+        .overlay-footer button:hover { background: rgba(14,140,140,0.3); }
+
+        .overlay-counter {
+            color: #4e7a7a;
+            font-size: 0.8rem;
+            min-width: 60px;
+            text-align: center;
+        }
 
         @media (max-width: 700px) {
             .camera-grid {
@@ -243,6 +295,8 @@
             header h1 { font-size: 0.95rem; }
             .header-logo { height: 30px; }
             .tab-btn { padding: 8px 14px; font-size: 0.75rem; }
+            .overlay-content { width: 95vw; }
+            .overlay-title { font-size: 1rem; }
         }
     </style>
 </head>
@@ -268,13 +322,22 @@
 <div class="camera-grid" id="grid"></div>
 
 <div class="overlay" id="overlay" onclick="closeFull(event)">
-    <div class="overlay-close" onclick="closeFull(event)">✕</div>
-    <div class="overlay-title" id="oTitle"></div>
-    <div class="overlay-sub" id="oSub"></div>
-    <img id="oImg" src="" alt="">
-    <div class="overlay-nav">
-        <button onclick="navFull(event,-1)">◀ Prev</button>
-        <button onclick="navFull(event,1)">Next ▶</button>
+    <div class="overlay-content" onclick="event.stopPropagation()">
+        <div class="overlay-header">
+            <div class="overlay-header-left">
+                <div class="overlay-title" id="oTitle"></div>
+                <div class="overlay-sub" id="oSub"></div>
+            </div>
+            <div class="overlay-close" onclick="forceClose()">✕</div>
+        </div>
+        <div class="overlay-img-wrap">
+            <img id="oImg" src="" alt="">
+        </div>
+        <div class="overlay-footer">
+            <button onclick="navFull(-1)">◀ Prev</button>
+            <span class="overlay-counter" id="oCounter"></span>
+            <button onclick="navFull(1)">Next ▶</button>
+        </div>
     </div>
 </div>
 
@@ -359,20 +422,16 @@ function switchTab(tab, pushState) {
     activeTab = tab;
     activeCams = areas[tab];
 
-    // Update URL
     if (pushState) {
         history.pushState({ tab: tab }, '', BASE_PATH + tab);
     }
 
-    // Update page title
     document.title = `EAM Cameras — ${tabTitles[tab]}`;
 
-    // Update active tab button
     document.querySelectorAll('.tab-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.tab === tab);
     });
 
-    // Render grid
     grid.innerHTML = '';
     activeCams.forEach((c, i) => {
         const card = document.createElement('div');
@@ -411,57 +470,56 @@ function refreshAll() {
 
 setInterval(refreshAll, 300000);
 
-// Tab clicks
 document.getElementById('tabBar').addEventListener('click', e => {
     const btn = e.target.closest('.tab-btn');
     if (!btn) return;
     switchTab(btn.dataset.tab, true);
 });
 
-// Browser back/forward
 window.addEventListener('popstate', e => {
     const tab = (e.state && e.state.tab) ? e.state.tab : getTabFromURL();
     switchTab(tab, false);
 });
 
 // Fullscreen
-function openFull(i) {
-    idx = i;
-    const c = activeCams[i];
-    document.getElementById('oTitle').textContent = c.n;
-    const camId = typeof c.id === 'number' ? 'CAM #' + c.id : c.id.toUpperCase();
-    document.getElementById('oSub').textContent = c.hwy + '  •  ' + camId;
-    document.getElementById('oImg').src = imgUrl(c) + '?t=' + Date.now();
-    document.getElementById('overlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeFull(e) {
-    if (e.target.id === 'overlay' || e.target.classList.contains('overlay-close')) {
-        document.getElementById('overlay').classList.remove('active');
-        document.body.style.overflow = '';
-    }
-}
-
-function navFull(e, d) {
-    e.stopPropagation();
-    idx = (idx + d + activeCams.length) % activeCams.length;
+function updateOverlay() {
     const c = activeCams[idx];
     document.getElementById('oTitle').textContent = c.n;
     const camId = typeof c.id === 'number' ? 'CAM #' + c.id : c.id.toUpperCase();
     document.getElementById('oSub').textContent = c.hwy + '  •  ' + camId;
     document.getElementById('oImg').src = imgUrl(c) + '?t=' + Date.now();
+    document.getElementById('oCounter').textContent = (idx + 1) + ' / ' + activeCams.length;
+}
+
+function openFull(i) {
+    idx = i;
+    updateOverlay();
+    document.getElementById('overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function forceClose() {
+    document.getElementById('overlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function closeFull(e) {
+    if (e.target.id === 'overlay') forceClose();
+}
+
+function navFull(d) {
+    idx = (idx + d + activeCams.length) % activeCams.length;
+    updateOverlay();
 }
 
 document.addEventListener('keydown', e => {
     const o = document.getElementById('overlay');
     if (!o.classList.contains('active')) return;
-    if (e.key === 'Escape') { o.classList.remove('active'); document.body.style.overflow = ''; }
-    if (e.key === 'ArrowLeft') navFull(e, -1);
-    if (e.key === 'ArrowRight') navFull(e, 1);
+    if (e.key === 'Escape') forceClose();
+    if (e.key === 'ArrowLeft') navFull(-1);
+    if (e.key === 'ArrowRight') navFull(1);
 });
 
-// Initial load — read tab from URL
 const initialTab = getTabFromURL();
 history.replaceState({ tab: initialTab }, '', BASE_PATH + initialTab);
 switchTab(initialTab, false);
