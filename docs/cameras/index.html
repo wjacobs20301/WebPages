@@ -3,432 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BC Highway Cameras</title>
+    <title>EAM Highway Cameras</title>
+    <link rel="icon" href="http://github.wjacobs.space/cameras/logos/eam-logo-small.png" type="image/png">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: #0f1923;
+            background: #0c1a1f;
             color: #e0e0e0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
         }
 
         header {
-            background: linear-gradient(135deg, #1a2a3a 0%, #0d1b2a 100%);
-            border-bottom: 3px solid #f0a500;
-            padding: 20px 30px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: linear-gradient(135deg, #0e2328, #091a1e);
+            border-bottom: 2px solid #0e8c8c;
+            padding: 10px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 14px;
         }
 
-        .logo-icon {
-            width: 48px;
-            height: 48px;
-            background: #f0a500;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            flex-shrink: 0;
+        .header-logo {
+            height: 38px;
         }
 
         header h1 {
-            font-size: 1.6rem;
+            font-size: 1.1rem;
+            color: #fff;
             font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
-
-        header h1 span {
-            color: #f0a500;
-        }
-
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .refresh-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            color: #8a9bb5;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #4caf50;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        .btn {
-            padding: 8px 18px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        header h1 span { color: #0e8c8c; }
+        .header-sub {
+            font-size: 0.65rem;
+            color: #6b8a8a;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .btn-refresh {
-            background: #f0a500;
-            color: #0f1923;
-        }
-
-        .btn-refresh:hover {
-            background: #ffb800;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(240, 165, 0, 0.3);
-        }
-
-        .btn-size {
-            background: #1e3a5f;
-            color: #8ab4f8;
-            border: 1px solid #2a4a6f;
-        }
-
-        .btn-size:hover {
-            background: #254a75;
-        }
-
-        .btn-size.active {
-            background: #2962ff;
-            color: white;
-            border-color: #2962ff;
-        }
-
-        .size-toggle {
-            display: flex;
-            gap: 4px;
-        }
-
-        nav {
-            background: #162231;
-            padding: 12px 30px;
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            border-bottom: 1px solid #1e3248;
-        }
-
-        .filter-btn {
             padding: 6px 16px;
-            border: 1px solid #1e3a5f;
-            background: transparent;
-            color: #8a9bb5;
-            border-radius: 20px;
+            background: #0e8c8c;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.8rem;
-            white-space: nowrap;
+            font-weight: 700;
             transition: all 0.2s;
         }
+        .btn-refresh:hover { background: #10a5a5; transform: translateY(-1px); }
 
-        .filter-btn:hover, .filter-btn.active {
-            background: #1e3a5f;
-            color: #f0a500;
-            border-color: #f0a500;
+        /* Tabs */
+        .tab-bar {
+            background: #0f2029;
+            padding: 0 24px;
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid #163038;
+        }
+
+        .tab-btn {
+            padding: 10px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #4e7a7a;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: #7ab5b5;
+            background: rgba(14,140,140,0.05);
+        }
+
+        .tab-btn.active {
+            color: #0fb5b5;
+            border-bottom-color: #0e8c8c;
+            background: rgba(14,140,140,0.08);
+        }
+
+        .tab-btn .tab-label {
+            display: block;
+            font-size: 0.65rem;
+            color: #3a6060;
+            font-weight: 400;
+            margin-top: 1px;
+        }
+
+        .tab-btn.active .tab-label {
+            color: #0a7070;
         }
 
         .camera-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-            gap: 20px;
-            padding: 25px;
-            max-width: 1800px;
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            gap: 12px;
+            padding: 16px;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
-        .camera-grid.size-small {
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 12px;
-            padding: 15px;
-        }
-
-        .camera-grid.size-large {
-            grid-template-columns: repeat(auto-fill, minmax(580px, 1fr));
-            gap: 25px;
-        }
-
         .camera-card {
-            background: #1a2d40;
-            border-radius: 12px;
+            background: #112a30;
+            border-radius: 8px;
             overflow: hidden;
-            border: 1px solid #1e3a5f;
-            transition: all 0.3s ease;
-            position: relative;
+            border: 1px solid #1a3a40;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-
         .camera-card:hover {
-            border-color: #f0a500;
+            border-color: #0e8c8c;
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-        }
-
-        .camera-card.hidden {
-            display: none;
+            box-shadow: 0 6px 24px rgba(14,140,140,0.15);
         }
 
         .card-header {
-            padding: 12px 16px;
+            padding: 6px 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: linear-gradient(135deg, #1e3a5f 0%, #162d4a 100%);
+            background: linear-gradient(135deg, #133538, #0f2a30);
         }
 
         .card-title {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            min-width: 0;
         }
 
-        .cam-icon {
-            font-size: 1rem;
-        }
+        .cam-icon { font-size: 0.85rem; }
 
         .card-header h3 {
-            font-size: 0.95rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            color: #ffffff;
+            color: #d0e0e0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-
-        .direction-badge {
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .dir-north { background: #1b5e20; color: #81c784; }
-        .dir-south { background: #b71c1c33; color: #ef9a9a; }
-        .dir-east { background: #0d47a1; color: #90caf9; }
-        .dir-west { background: #4a148c33; color: #ce93d8; }
-        .dir-other { background: #37474f; color: #b0bec5; }
 
         .card-highway {
-            font-size: 0.7rem;
-            color: #f0a500;
+            font-size: 0.6rem;
+            color: #0fb5b5;
             font-weight: 600;
-            margin-top: 2px;
         }
 
-        .camera-img-container {
+        .dir-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+        .dir-N { background: #0e3d2a; color: #5ec49e; }
+        .dir-S { background: #3d1a1a; color: #d48a8a; }
+        .dir-E { background: #0d2f4a; color: #6ab0d8; }
+        .dir-W { background: #2d1a40; color: #b088cc; }
+        .dir-other { background: #1a3038; color: #7a9a9a; }
+
+        .img-wrap {
             position: relative;
-            width: 100%;
-            background: #0a1520;
-            min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #081418;
         }
 
-        .camera-img-container img {
+        .camera-card img {
             width: 100%;
             display: block;
-            transition: opacity 0.3s;
-        }
-
-        .camera-img-container .loading-spinner {
-            position: absolute;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            color: #5a7a9a;
-        }
-
-        .camera-img-container.loading .loading-spinner {
-            display: flex;
-        }
-
-        .spinner {
-            width: 30px;
-            height: 30px;
-            border: 3px solid #1e3a5f;
-            border-top-color: #f0a500;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
 
         .card-footer {
-            padding: 8px 16px;
+            padding: 4px 12px;
+            font-size: 0.65rem;
+            color: #3a6060;
+            border-top: 1px solid #1a3a40;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            font-size: 0.75rem;
-            color: #5a7a9a;
-            border-top: 1px solid #1e3248;
-        }
-
-        .cam-id {
             font-family: 'Courier New', monospace;
-            color: #4a6a8a;
         }
 
-        .last-update {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .fullscreen-overlay {
+        /* Fullscreen */
+        .overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.92);
+            inset: 0;
+            background: rgba(8,20,24,0.95);
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            cursor: zoom-out;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
+            cursor: zoom-out;
         }
-
-        .fullscreen-overlay.active {
-            display: flex;
-        }
-
-        .fullscreen-overlay img {
-            max-width: 90vw;
+        .overlay.active { display: flex; }
+        .overlay img {
+            max-width: 92vw;
             max-height: 80vh;
             border-radius: 8px;
-            box-shadow: 0 0 60px rgba(0,0,0,0.8);
+            box-shadow: 0 0 40px rgba(0,0,0,0.6);
         }
-
-        .fullscreen-title {
-            color: #ffffff;
-            font-size: 1.3rem;
+        .overlay-title {
+            color: #fff;
+            font-size: 1.2rem;
             font-weight: 600;
         }
-
-        .fullscreen-close {
+        .overlay-sub {
+            color: #0fb5b5;
+            font-size: 0.85rem;
+            margin-top: -6px;
+        }
+        .overlay-close {
             position: absolute;
-            top: 20px;
-            right: 30px;
-            color: white;
-            font-size: 2rem;
+            top: 14px; right: 22px;
+            color: #fff;
+            font-size: 1.8rem;
             cursor: pointer;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: rgba(14,140,140,0.2);
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
             border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            transition: background 0.2s;
         }
-
-        .fullscreen-close:hover {
-            background: rgba(255,255,255,0.25);
+        .overlay-close:hover { background: rgba(14,140,140,0.4); }
+        .overlay-nav {
+            display: flex; gap: 8px;
         }
-
-        .fullscreen-nav {
-            display: flex;
-            gap: 10px;
-            margin-top: 5px;
-        }
-
-        .fullscreen-nav button {
-            padding: 8px 20px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 8px;
+        .overlay-nav button {
+            padding: 7px 18px;
+            background: rgba(14,140,140,0.15);
+            color: #fff;
+            border: 1px solid rgba(14,140,140,0.3);
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: background 0.2s;
         }
+        .overlay-nav button:hover { background: rgba(14,140,140,0.3); }
 
-        .fullscreen-nav button:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-            color: #5a7a9a;
-        }
-
-        .no-results h2 {
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #3a5a7a;
-            font-size: 0.8rem;
-            border-top: 1px solid #1e3248;
-            margin-top: 20px;
-        }
-
-        footer a {
-            color: #f0a500;
-            text-decoration: none;
-        }
-
-        @media (max-width: 768px) {
+        @media (max-width: 700px) {
             .camera-grid {
-                grid-template-columns: 1fr;
-                padding: 12px;
-                gap: 12px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+                padding: 8px;
             }
-            .camera-grid.size-large {
-                grid-template-columns: 1fr;
-            }
-            header {
-                padding: 15px;
-            }
-            header h1 {
-                font-size: 1.2rem;
-            }
-            nav {
-                padding: 10px 15px;
-            }
+            .card-header h3 { font-size: 0.7rem; }
+            header h1 { font-size: 0.95rem; }
+            .header-logo { height: 30px; }
+            .tab-btn { padding: 8px 14px; font-size: 0.75rem; }
+            .header-left { gap: 10px; }
         }
     </style>
 </head>
@@ -436,252 +274,192 @@
 
 <header>
     <div class="header-left">
-        <div class="logo-icon">🎥</div>
+        <img src="http://github.wjacobs.space/cameras/logos/eam-logo-small.png" alt="EAM" class="header-logo" onerror="this.style.display='none'">
         <div>
-            <h1><span>BC</span> Highway Cameras</h1>
+            <h1><span>Highway</span> Cameras</h1>
+            <div class="header-sub">Emil Anderson Maintenance</div>
         </div>
     </div>
-    <div class="header-controls">
-        <div class="refresh-info">
-            <div class="status-dot"></div>
-            <span>Auto-refresh: <strong id="countdown">120</strong>s</span>
-        </div>
-        <div class="size-toggle">
-            <button class="btn btn-size" data-size="small" title="Small">S</button>
-            <button class="btn btn-size active" data-size="medium" title="Medium">M</button>
-            <button class="btn btn-size" data-size="large" title="Large">L</button>
-        </div>
-        <button class="btn btn-refresh" onclick="refreshAll()">⟳ Refresh All</button>
-    </div>
+    <button class="btn-refresh" onclick="refreshAll()">⟳ Refresh</button>
 </header>
 
-<nav id="filterNav">
-    <button class="filter-btn active" data-filter="all">All Cameras</button>
-    <button class="filter-btn" data-filter="Bridal Falls">Bridal Falls</button>
-    <button class="filter-btn" data-filter="Annis Road">Annis Road</button>
-    <button class="filter-btn" data-filter="Yale">Yale</button>
-    <button class="filter-btn" data-filter="Allison Pass">Allison Pass</button>
-    <button class="filter-btn" data-filter="Evans Road">Evans Road</button>
-    <button class="filter-btn" data-filter="Sunday Summit">Sunday Summit</button>
-    <button class="filter-btn" data-filter="Hope Slide">Hope Slide</button>
-    <button class="filter-btn" data-filter="McCallum">McCallum Road</button>
-    <button class="filter-btn" data-filter="Agassiz">Agassiz</button>
-    <button class="filter-btn" data-filter="Mission">Mission</button>
-    <button class="filter-btn" data-filter="Junction">Hwy 3/5 Junction</button>
-</nav>
+<div class="tab-bar" id="tabBar">
+    <button class="tab-btn active" data-tab="fraser">SA 7 — Fraser Valley<span class="tab-label">17 cameras</span></button>
+    <button class="tab-btn" data-tab="robson">SA 20 — Robson<span class="tab-label">10 cameras</span></button>
+    <button class="tab-btn" data-tab="skeena">SA 26 — Skeena<span class="tab-label">15 cameras</span></button>
+</div>
 
-<div class="camera-grid" id="cameraGrid"></div>
+<div class="camera-grid" id="grid"></div>
 
-<div class="fullscreen-overlay" id="fullscreenOverlay" onclick="closeFullscreen(event)">
-    <div class="fullscreen-close" onclick="closeFullscreen(event)">✕</div>
-    <div class="fullscreen-title" id="fullscreenTitle"></div>
-    <img id="fullscreenImg" src="" alt="">
-    <div class="fullscreen-nav">
-        <button onclick="navFullscreen(event, -1)">◀ Previous</button>
-        <button onclick="navFullscreen(event, 1)">Next ▶</button>
+<div class="overlay" id="overlay" onclick="closeFull(event)">
+    <div class="overlay-close" onclick="closeFull(event)">✕</div>
+    <div class="overlay-title" id="oTitle"></div>
+    <div class="overlay-sub" id="oSub"></div>
+    <img id="oImg" src="" alt="">
+    <div class="overlay-nav">
+        <button onclick="navFull(event,-1)">◀ Prev</button>
+        <button onclick="navFull(event,1)">Next ▶</button>
     </div>
 </div>
 
-<footer>
-    Images sourced from <a href="https://www.drivebc.ca" target="_blank">DriveBC</a> — 
-    British Columbia Ministry of Transportation and Infrastructure
-</footer>
-
 <script>
-    const cameras = [
-        { id: 240, name: "Bridal Falls", direction: "E", group: "Bridal Falls", highway: "Hwy 1" },
-        { id: 325, name: "Annis Road", direction: "E", group: "Annis Road", highway: "Hwy 1" },
-        { id: 327, name: "Annis Road", direction: "W", group: "Annis Road", highway: "Hwy 1" },
-        { id: 840, name: "Yale", direction: "N", group: "Yale", highway: "Hwy 1" },
-        { id: 466, name: "Yale", direction: "S", group: "Yale", highway: "Hwy 1" },
-        { id: 1112, name: "Allison Pass", direction: "W", group: "Allison Pass", highway: "Hwy 3" },
-        { id: 128, name: "Evans Road", direction: "E", group: "Evans Road", highway: "Hwy 1" },
-        { id: 559, name: "Evans Road", direction: "W", group: "Evans Road", highway: "Hwy 1" },
-        { id: 246, name: "Sunday Summit", direction: "N", group: "Sunday Summit", highway: "Hwy 5A" },
-        { id: 1155, name: "Sunday Summit", direction: "S", group: "Sunday Summit", highway: "Hwy 5A" },
-        { id: 383, name: "Hwy 3 at Highway 3/5 Junction", direction: "", group: "Junction", highway: "Hwy 3/5" },
-        { id: 467, name: "Hope Slide", direction: "", group: "Hope Slide", highway: "Hwy 3" },
-        { id: 204, name: "McCallum Road", direction: "W", group: "McCallum", highway: "Hwy 1" },
-        { id: 223, name: "McCallum Road", direction: "E", group: "McCallum", highway: "Hwy 1" },
-        { id: 242, name: "Agassiz", direction: "", group: "Agassiz", highway: "Hwy 9" },
-        { id: 503, name: "Mission", direction: "N", group: "Mission", highway: "Hwy 11" },
-        { id: 505, name: "Mission", direction: "S", group: "Mission", highway: "Hwy 11" },
-    ];
+const areas = {
+    fraser: [
+        { id:240, n:"Bridal Falls", d:"E", hwy:"Hwy 1" },
+        { id:325, n:"Annis Road", d:"E", hwy:"Hwy 1" },
+        { id:327, n:"Annis Road", d:"W", hwy:"Hwy 1" },
+        { id:840, n:"Yale", d:"N", hwy:"Hwy 1" },
+        { id:466, n:"Yale", d:"S", hwy:"Hwy 1" },
+        { id:1112, n:"Allison Pass", d:"W", hwy:"Hwy 3" },
+        { id:128, n:"Evans Road", d:"E", hwy:"Hwy 1" },
+        { id:559, n:"Evans Road", d:"W", hwy:"Hwy 1" },
+        { id:246, n:"Sunday Summit", d:"N", hwy:"Hwy 5A" },
+        { id:1155, n:"Sunday Summit", d:"S", hwy:"Hwy 5A" },
+        { id:383, n:"Hwy 3/5 Junction", d:"", hwy:"Hwy 3/5" },
+        { id:467, n:"Hope Slide", d:"", hwy:"Hwy 3" },
+        { id:204, n:"McCallum Road", d:"W", hwy:"Hwy 1" },
+        { id:223, n:"McCallum Road", d:"E", hwy:"Hwy 1" },
+        { id:242, n:"Agassiz", d:"", hwy:"Hwy 9" },
+        { id:503, n:"Mission", d:"N", hwy:"Hwy 11" },
+        { id:505, n:"Mission", d:"S", hwy:"Hwy 11" }
+    ],
+    robson: [
+        { id:560, n:"BC-Alberta Border", d:"", hwy:"Hwy 16" },
+        { id:495, n:"Messiter Summit", d:"", hwy:"Hwy 5" },
+        { id:254, n:"Blue River", d:"", hwy:"Hwy 5" },
+        { id:478, n:"Lempriere", d:"", hwy:"Hwy 5" },
+        { id:216, n:"Crescent Spur", d:"", hwy:"Hwy 16" },
+        { id:865, n:"West Twin", d:"E", hwy:"Hwy 16" },
+        { id:864, n:"West Twin", d:"W", hwy:"Hwy 16" },
+        { id:339, n:"Dunster Station Road", d:"", hwy:"Hwy 16" },
+        { id:483, n:"Tete Jaune Cache", d:"", hwy:"Hwy 16" },
+        { id:141, n:"Red Pass", d:"", hwy:"Hwy 16" }
+    ],
+    skeena: [
+        { id:593, n:"Kwinitsa", d:"", hwy:"Hwy 16" },
+        { id:146, n:"Kasiks", d:"", hwy:"Hwy 16" },
+        { id:111, n:"Terrace", d:"E", hwy:"Hwy 16" },
+        { id:286, n:"Chimdemash", d:"", hwy:"Hwy 16" },
+        { id:382, n:"Grizzly Hill", d:"", hwy:"Hwy 37" },
+        { id:200, n:"Laxgalts'ap", d:"", hwy:"Nisga'a Hwy" },
+        { id:335, n:"Gitwinksihlkw", d:"", hwy:"Nisga'a Hwy" },
+        { id:491, n:"Rosswood", d:"", hwy:"Kalum Lake Dr" },
+        { id:"shames", n:"Shames Mountain", d:"", hwy:"Shames Mtn Rd", url:"https://storage.googleapis.com/shames_webcam_images/camera2-latest-timestamp.png" },
+        { id:144, n:"Onion Lake", d:"", hwy:"Hwy 37" },
+        { id:110, n:"Kitimat", d:"", hwy:"Hwy 37" },
+        { id:566, n:"Rainbow Summit Chain-Up", d:"", hwy:"Hwy 37" },
+        { id:172, n:"Tlell", d:"", hwy:"Hwy 16" },
+        { id:143, n:"Kitwanga", d:"W", hwy:"Hwy 16" },
+        { id:378, n:"New Hazelton", d:"", hwy:"Hwy 16" }
+    ]
+};
 
-    let currentFullscreenIndex = -1;
-    let visibleCameras = [...cameras];
+let activeTab = 'fraser';
+let activeCams = [];
+let idx = -1;
 
-    function getDirectionClass(dir) {
-        switch(dir) {
-            case 'N': return 'dir-north';
-            case 'S': return 'dir-south';
-            case 'E': return 'dir-east';
-            case 'W': return 'dir-west';
-            default: return 'dir-other';
-        }
-    }
+const grid = document.getElementById('grid');
+const dirFull = { N:"North", S:"South", E:"East", W:"West" };
 
-    function getDirectionFull(dir) {
-        switch(dir) {
-            case 'N': return 'North';
-            case 'S': return 'South';
-            case 'E': return 'East';
-            case 'W': return 'West';
-            default: return '';
-        }
-    }
+function label(c) { return c.n + (c.d ? ' — ' + dirFull[c.d] : ''); }
 
-    function buildCameraCards() {
-        const grid = document.getElementById('cameraGrid');
-        grid.innerHTML = '';
+function imgUrl(c) {
+    if (c.url) return c.url;
+    return `https://images.drivebc.ca/bchighwaycam/pub/cameras/${c.id}.jpg`;
+}
 
-        cameras.forEach((cam, index) => {
-            const dirLabel = cam.direction ? ` — ${getDirectionFull(cam.direction)}` : '';
-            const dirBadge = cam.direction 
-                ? `<span class="direction-badge ${getDirectionClass(cam.direction)}">${cam.direction}</span>` 
-                : '';
+function renderGrid(tab) {
+    activeTab = tab;
+    activeCams = areas[tab];
+    grid.innerHTML = '';
 
-            const card = document.createElement('div');
-            card.className = 'camera-card';
-            card.dataset.group = cam.group;
-            card.dataset.index = index;
+    activeCams.forEach((c, i) => {
+        const card = document.createElement('div');
+        card.className = 'camera-card';
+        const dc = c.d ? 'dir-' + c.d : 'dir-other';
+        const badge = c.d ? `<span class="dir-badge ${dc}">${c.d}</span>` : '';
+        const camId = typeof c.id === 'number' ? `CAM #${c.id}` : c.id.toUpperCase();
 
-            card.innerHTML = `
-                <div class="card-header">
-                    <div class="card-title">
-                        <span class="cam-icon">📷</span>
-                        <div>
-                            <h3>${cam.name}${dirLabel}</h3>
-                            <div class="card-highway">${cam.highway}</div>
-                        </div>
+        card.innerHTML = `
+            <div class="card-header">
+                <div class="card-title">
+                    <span class="cam-icon">📷</span>
+                    <div>
+                        <h3>${c.n}${c.d ? ' - ' + c.d : ''}</h3>
+                        <div class="card-highway">${c.hwy}</div>
                     </div>
-                    ${dirBadge}
                 </div>
-                <div class="camera-img-container loading" onclick="openFullscreen(${index})">
-                    <div class="loading-spinner">
-                        <div class="spinner"></div>
-                        <span>Loading...</span>
-                    </div>
-                    <img 
-                        src="https://images.drivebc.ca/bchighwaycam/pub/cameras/${cam.id}.jpg?t=${Date.now()}" 
-                        alt="${cam.name} ${cam.direction}"
-                        loading="lazy"
-                        onload="this.parentElement.classList.remove('loading')"
-                        onerror="this.parentElement.classList.remove('loading'); this.alt='Camera unavailable'; this.style.opacity='0.3'"
-                        style="cursor: zoom-in;"
-                    >
-                </div>
-                <div class="card-footer">
-                    <span class="cam-id">CAM #${cam.id}</span>
-                    <span class="last-update">🕐 Updated just now</span>
-                </div>
-            `;
-
-            grid.appendChild(card);
-        });
-    }
-
-    function refreshAll() {
-        const images = document.querySelectorAll('.camera-img-container img');
-        images.forEach(img => {
-            const container = img.parentElement;
-            container.classList.add('loading');
-            const baseSrc = img.src.split('?')[0];
-            img.src = baseSrc + '?t=' + Date.now();
-        });
-        countdown = 120;
-        document.querySelectorAll('.last-update').forEach(el => {
-            el.innerHTML = '🕐 Updated just now';
-        });
-    }
-
-    // Filters
-    document.getElementById('filterNav').addEventListener('click', (e) => {
-        if (!e.target.classList.contains('filter-btn')) return;
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-
-        const filter = e.target.dataset.filter;
-        const cards = document.querySelectorAll('.camera-card');
-        let anyVisible = false;
-
-        cards.forEach(card => {
-            if (filter === 'all' || card.dataset.group === filter) {
-                card.classList.remove('hidden');
-                anyVisible = true;
-            } else {
-                card.classList.add('hidden');
-            }
-        });
+                ${badge}
+            </div>
+            <div class="img-wrap">
+                <img src="${imgUrl(c)}?t=${Date.now()}" alt="${label(c)}" loading="lazy"
+                     onerror="this.style.opacity=0.2">
+            </div>
+            <div class="card-footer">
+                <span>${camId}</span>
+                <span>🕐 Live</span>
+            </div>`;
+        card.onclick = () => openFull(i);
+        grid.appendChild(card);
     });
+}
 
-    // Size toggle
-    document.querySelectorAll('.btn-size').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.btn-size').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const grid = document.getElementById('cameraGrid');
-            grid.classList.remove('size-small', 'size-large');
-            if (btn.dataset.size === 'small') grid.classList.add('size-small');
-            if (btn.dataset.size === 'large') grid.classList.add('size-large');
-        });
+function refreshAll() {
+    document.querySelectorAll('.camera-card img').forEach((img, i) => {
+        img.src = imgUrl(activeCams[i]) + '?t=' + Date.now();
+        img.style.opacity = '';
     });
+}
 
-    // Fullscreen
-    function openFullscreen(index) {
-        currentFullscreenIndex = index;
-        const cam = cameras[index];
-        const overlay = document.getElementById('fullscreenOverlay');
-        const img = document.getElementById('fullscreenImg');
-        const title = document.getElementById('fullscreenTitle');
+setInterval(refreshAll, 300000);
 
-        const dirLabel = cam.direction ? ` — ${getDirectionFull(cam.direction)}` : '';
-        title.textContent = `${cam.name}${dirLabel} (${cam.highway})`;
-        img.src = `https://images.drivebc.ca/bchighwaycam/pub/cameras/${cam.id}.jpg?t=${Date.now()}`;
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
+// Tabs
+document.getElementById('tabBar').addEventListener('click', e => {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderGrid(btn.dataset.tab);
+});
+
+// Fullscreen
+function openFull(i) {
+    idx = i;
+    const c = activeCams[i];
+    document.getElementById('oTitle').textContent = label(c);
+    const camId = typeof c.id === 'number' ? 'CAM #' + c.id : c.id.toUpperCase();
+    document.getElementById('oSub').textContent = c.hwy + '  •  ' + camId;
+    document.getElementById('oImg').src = imgUrl(c) + '?t=' + Date.now();
+    document.getElementById('overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeFull(e) {
+    if (e.target.id === 'overlay' || e.target.classList.contains('overlay-close')) {
+        document.getElementById('overlay').classList.remove('active');
+        document.body.style.overflow = '';
     }
+}
 
-    function closeFullscreen(event) {
-        if (event.target === document.getElementById('fullscreenOverlay') || 
-            event.target.classList.contains('fullscreen-close')) {
-            document.getElementById('fullscreenOverlay').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    }
+function navFull(e, d) {
+    e.stopPropagation();
+    idx = (idx + d + activeCams.length) % activeCams.length;
+    const c = activeCams[idx];
+    document.getElementById('oTitle').textContent = label(c);
+    const camId = typeof c.id === 'number' ? 'CAM #' + c.id : c.id.toUpperCase();
+    document.getElementById('oSub').textContent = c.hwy + '  •  ' + camId;
+    document.getElementById('oImg').src = imgUrl(c) + '?t=' + Date.now();
+}
 
-    function navFullscreen(event, delta) {
-        event.stopPropagation();
-        currentFullscreenIndex = (currentFullscreenIndex + delta + cameras.length) % cameras.length;
-        const cam = cameras[currentFullscreenIndex];
-        const dirLabel = cam.direction ? ` — ${getDirectionFull(cam.direction)}` : '';
-        document.getElementById('fullscreenTitle').textContent = `${cam.name}${dirLabel} (${cam.highway})`;
-        document.getElementById('fullscreenImg').src = `https://images.drivebc.ca/bchighwaycam/pub/cameras/${cam.id}.jpg?t=${Date.now()}`;
-    }
+document.addEventListener('keydown', e => {
+    const o = document.getElementById('overlay');
+    if (!o.classList.contains('active')) return;
+    if (e.key === 'Escape') { o.classList.remove('active'); document.body.style.overflow = ''; }
+    if (e.key === 'ArrowLeft') navFull(e, -1);
+    if (e.key === 'ArrowRight') navFull(e, 1);
+});
 
-    document.addEventListener('keydown', (e) => {
-        const overlay = document.getElementById('fullscreenOverlay');
-        if (!overlay.classList.contains('active')) return;
-        if (e.key === 'Escape') {
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-        if (e.key === 'ArrowLeft') navFullscreen(e, -1);
-        if (e.key === 'ArrowRight') navFullscreen(e, 1);
-    });
-
-    // Auto refresh countdown
-    let countdown = 120;
-    setInterval(() => {
-        countdown--;
-        document.getElementById('countdown').textContent = countdown;
-        if (countdown <= 0) {
-            refreshAll();
-        }
-    }, 1000);
-
-    // Build on load
-    buildCameraCards();
+renderGrid('fraser');
 </script>
 </body>
 </html>
