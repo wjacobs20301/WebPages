@@ -33,15 +33,12 @@
             gap: 14px;
         }
 
-        .header-logo {
-            height: 38px;
-        }
+        .header-logo { height: 38px; }
 
         header h1 {
             font-size: 1.1rem;
             color: #fff;
             font-weight: 700;
-            letter-spacing: 0.3px;
         }
         header h1 span { color: #0e8c8c; }
         .header-sub {
@@ -65,7 +62,6 @@
         }
         .btn-refresh:hover { background: #10a5a5; transform: translateY(-1px); }
 
-        /* Tabs */
         .tab-bar {
             background: #0f2029;
             padding: 0 24px;
@@ -106,9 +102,7 @@
             margin-top: 1px;
         }
 
-        .tab-btn.active .tab-label {
-            color: #0a7070;
-        }
+        .tab-btn.active .tab-label { color: #0a7070; }
 
         .camera-grid {
             display: grid;
@@ -165,20 +159,6 @@
             font-weight: 600;
         }
 
-        .dir-badge {
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.6rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            flex-shrink: 0;
-        }
-        .dir-N { background: #0e3d2a; color: #5ec49e; }
-        .dir-S { background: #3d1a1a; color: #d48a8a; }
-        .dir-E { background: #0d2f4a; color: #6ab0d8; }
-        .dir-W { background: #2d1a40; color: #b088cc; }
-        .dir-other { background: #1a3038; color: #7a9a9a; }
-
         .img-wrap {
             position: relative;
             background: #081418;
@@ -199,7 +179,6 @@
             font-family: 'Courier New', monospace;
         }
 
-        /* Fullscreen */
         .overlay {
             display: none;
             position: fixed;
@@ -241,9 +220,7 @@
             border-radius: 50%;
         }
         .overlay-close:hover { background: rgba(14,140,140,0.4); }
-        .overlay-nav {
-            display: flex; gap: 8px;
-        }
+        .overlay-nav { display: flex; gap: 8px; }
         .overlay-nav button {
             padding: 7px 18px;
             background: rgba(14,140,140,0.15);
@@ -266,7 +243,6 @@
             header h1 { font-size: 0.95rem; }
             .header-logo { height: 30px; }
             .tab-btn { padding: 8px 14px; font-size: 0.75rem; }
-            .header-left { gap: 10px; }
         }
     </style>
 </head>
@@ -284,7 +260,7 @@
 </header>
 
 <div class="tab-bar" id="tabBar">
-    <button class="tab-btn active" data-tab="fraser">SA 7 — Fraser Valley<span class="tab-label">17 cameras</span></button>
+    <button class="tab-btn" data-tab="fraser-valley">SA 7 — Fraser Valley<span class="tab-label">17 cameras</span></button>
     <button class="tab-btn" data-tab="robson">SA 20 — Robson<span class="tab-label">10 cameras</span></button>
     <button class="tab-btn" data-tab="skeena">SA 26 — Skeena<span class="tab-label">15 cameras</span></button>
 </div>
@@ -303,81 +279,104 @@
 </div>
 
 <script>
+const BASE_PATH = '/cameras/';
+
 const areas = {
-    fraser: [
-        { id:240, n:"Bridal Falls", d:"E", hwy:"Hwy 1" },
-        { id:325, n:"Annis Road", d:"E", hwy:"Hwy 1" },
-        { id:327, n:"Annis Road", d:"W", hwy:"Hwy 1" },
-        { id:840, n:"Yale", d:"N", hwy:"Hwy 1" },
-        { id:466, n:"Yale", d:"S", hwy:"Hwy 1" },
-        { id:1112, n:"Allison Pass", d:"W", hwy:"Hwy 3" },
-        { id:128, n:"Evans Road", d:"E", hwy:"Hwy 1" },
-        { id:559, n:"Evans Road", d:"W", hwy:"Hwy 1" },
-        { id:246, n:"Sunday Summit", d:"N", hwy:"Hwy 5A" },
-        { id:1155, n:"Sunday Summit", d:"S", hwy:"Hwy 5A" },
-        { id:383, n:"Hwy 3/5 Junction", d:"", hwy:"Hwy 3/5" },
-        { id:467, n:"Hope Slide", d:"", hwy:"Hwy 3" },
-        { id:204, n:"McCallum Road", d:"W", hwy:"Hwy 1" },
-        { id:223, n:"McCallum Road", d:"E", hwy:"Hwy 1" },
-        { id:242, n:"Agassiz", d:"", hwy:"Hwy 9" },
-        { id:503, n:"Mission", d:"N", hwy:"Hwy 11" },
-        { id:505, n:"Mission", d:"S", hwy:"Hwy 11" }
+    'fraser-valley': [
+        { n:"Bridal Falls - E", hwy:"Hwy 1", id:240 },
+        { n:"Annis Road - E", hwy:"Hwy 1", id:325 },
+        { n:"Annis Road - W", hwy:"Hwy 1", id:327 },
+        { n:"Yale - N", hwy:"Hwy 1", id:840 },
+        { n:"Yale - S", hwy:"Hwy 1", id:466 },
+        { n:"Allison Pass - W", hwy:"Hwy 3", id:1112 },
+        { n:"Evans Road - E", hwy:"Hwy 1", id:128 },
+        { n:"Evans Road - W", hwy:"Hwy 1", id:559 },
+        { n:"Sunday Summit - N", hwy:"Hwy 5A", id:246 },
+        { n:"Sunday Summit - S", hwy:"Hwy 5A", id:1155 },
+        { n:"Hwy 3 at Highway 3/5 Junction", hwy:"Hwy 3/5", id:383 },
+        { n:"Hope Slide", hwy:"Hwy 3", id:467 },
+        { n:"McCallum Road - W", hwy:"Hwy 1", id:204 },
+        { n:"McCallum Road - E", hwy:"Hwy 1", id:223 },
+        { n:"Agassiz", hwy:"Hwy 9", id:242 },
+        { n:"Mission - N", hwy:"Hwy 11", id:503 },
+        { n:"Mission - S", hwy:"Hwy 11", id:505 }
     ],
     robson: [
-        { id:560, n:"BC-Alberta Border", d:"", hwy:"Hwy 16" },
-        { id:495, n:"Messiter Summit", d:"", hwy:"Hwy 5" },
-        { id:254, n:"Blue River", d:"", hwy:"Hwy 5" },
-        { id:478, n:"Lempriere", d:"", hwy:"Hwy 5" },
-        { id:216, n:"Crescent Spur", d:"", hwy:"Hwy 16" },
-        { id:865, n:"West Twin", d:"E", hwy:"Hwy 16" },
-        { id:864, n:"West Twin", d:"W", hwy:"Hwy 16" },
-        { id:339, n:"Dunster Station Road", d:"", hwy:"Hwy 16" },
-        { id:483, n:"Tete Jaune Cache", d:"", hwy:"Hwy 16" },
-        { id:141, n:"Red Pass", d:"", hwy:"Hwy 16" }
+        { n:"BC-Alberta Border", hwy:"Hwy 16", id:560 },
+        { n:"Messiter Summit", hwy:"Hwy 5", id:495 },
+        { n:"Blue River", hwy:"Hwy 5", id:254 },
+        { n:"Lempriere", hwy:"Hwy 5", id:478 },
+        { n:"Crescent Spur", hwy:"Hwy 16", id:216 },
+        { n:"West Twin - E", hwy:"Hwy 16", id:865 },
+        { n:"West Twin - W", hwy:"Hwy 16", id:864 },
+        { n:"Dunster Station Road", hwy:"Hwy 16", id:339 },
+        { n:"Tete Jaune Cache", hwy:"Hwy 16", id:483 },
+        { n:"Red Pass", hwy:"Hwy 16", id:141 }
     ],
     skeena: [
-        { id:593, n:"Kwinitsa", d:"", hwy:"Hwy 16" },
-        { id:146, n:"Kasiks", d:"", hwy:"Hwy 16" },
-        { id:111, n:"Terrace", d:"E", hwy:"Hwy 16" },
-        { id:286, n:"Chimdemash", d:"", hwy:"Hwy 16" },
-        { id:382, n:"Grizzly Hill", d:"", hwy:"Hwy 37" },
-        { id:200, n:"Laxgalts'ap", d:"", hwy:"Nisga'a Hwy" },
-        { id:335, n:"Gitwinksihlkw", d:"", hwy:"Nisga'a Hwy" },
-        { id:491, n:"Rosswood", d:"", hwy:"Kalum Lake Dr" },
-        { id:"shames", n:"Shames Mountain", d:"", hwy:"Shames Mtn Rd", url:"https://storage.googleapis.com/shames_webcam_images/camera2-latest-timestamp.png" },
-        { id:144, n:"Onion Lake", d:"", hwy:"Hwy 37" },
-        { id:110, n:"Kitimat", d:"", hwy:"Hwy 37" },
-        { id:566, n:"Rainbow Summit Chain-Up", d:"", hwy:"Hwy 37" },
-        { id:172, n:"Tlell", d:"", hwy:"Hwy 16" },
-        { id:143, n:"Kitwanga", d:"W", hwy:"Hwy 16" },
-        { id:378, n:"New Hazelton", d:"", hwy:"Hwy 16" }
+        { n:"Kwinitsa", hwy:"Hwy 16", id:593 },
+        { n:"Kasiks", hwy:"Hwy 16", id:146 },
+        { n:"Terrace - E", hwy:"Hwy 16", id:111 },
+        { n:"Chimdemash", hwy:"Hwy 16", id:286 },
+        { n:"Grizzly Hill", hwy:"Hwy 37", id:382 },
+        { n:"Laxgalts'ap", hwy:"Nisga'a Hwy", id:200 },
+        { n:"Gitwinksihlkw", hwy:"Nisga'a Hwy", id:335 },
+        { n:"Rosswood", hwy:"Kalum Lake Dr", id:491 },
+        { n:"Shames Mountain", hwy:"Shames Mtn Rd", id:"shames", url:"https://storage.googleapis.com/shames_webcam_images/camera2-latest-timestamp.png" },
+        { n:"Onion Lake", hwy:"Hwy 37", id:144 },
+        { n:"Kitimat", hwy:"Hwy 37", id:110 },
+        { n:"Rainbow Summit Chain-Up Area", hwy:"Hwy 37", id:566 },
+        { n:"Tlell", hwy:"Hwy 16", id:172 },
+        { n:"Kitwanga - W", hwy:"Hwy 16", id:143 },
+        { n:"New Hazelton", hwy:"Hwy 16", id:378 }
     ]
 };
 
-let activeTab = 'fraser';
+const tabTitles = {
+    'fraser-valley': 'Fraser Valley',
+    'robson': 'Robson',
+    'skeena': 'Skeena'
+};
+
+let activeTab = '';
 let activeCams = [];
 let idx = -1;
-
 const grid = document.getElementById('grid');
-const dirFull = { N:"North", S:"South", E:"East", W:"West" };
-
-function label(c) { return c.n + (c.d ? ' — ' + dirFull[c.d] : ''); }
 
 function imgUrl(c) {
     if (c.url) return c.url;
     return `https://images.drivebc.ca/bchighwaycam/pub/cameras/${c.id}.jpg`;
 }
 
-function renderGrid(tab) {
+function getTabFromURL() {
+    const path = window.location.pathname.replace(BASE_PATH, '').replace(/\/$/, '');
+    if (areas[path]) return path;
+    return 'fraser-valley';
+}
+
+function switchTab(tab, pushState) {
+    if (!areas[tab]) tab = 'fraser-valley';
     activeTab = tab;
     activeCams = areas[tab];
-    grid.innerHTML = '';
 
+    // Update URL
+    if (pushState) {
+        history.pushState({ tab: tab }, '', BASE_PATH + tab);
+    }
+
+    // Update page title
+    document.title = `EAM Cameras — ${tabTitles[tab]}`;
+
+    // Update active tab button
+    document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.tab === tab);
+    });
+
+    // Render grid
+    grid.innerHTML = '';
     activeCams.forEach((c, i) => {
         const card = document.createElement('div');
         card.className = 'camera-card';
-        const dc = c.d ? 'dir-' + c.d : 'dir-other';
-        const badge = c.d ? `<span class="dir-badge ${dc}">${c.d}</span>` : '';
         const camId = typeof c.id === 'number' ? `CAM #${c.id}` : c.id.toUpperCase();
 
         card.innerHTML = `
@@ -385,14 +384,13 @@ function renderGrid(tab) {
                 <div class="card-title">
                     <span class="cam-icon">📷</span>
                     <div>
-                        <h3>${c.n}${c.d ? ' - ' + c.d : ''}</h3>
+                        <h3>${c.n}</h3>
                         <div class="card-highway">${c.hwy}</div>
                     </div>
                 </div>
-                ${badge}
             </div>
             <div class="img-wrap">
-                <img src="${imgUrl(c)}?t=${Date.now()}" alt="${label(c)}" loading="lazy"
+                <img src="${imgUrl(c)}?t=${Date.now()}" alt="${c.n}" loading="lazy"
                      onerror="this.style.opacity=0.2">
             </div>
             <div class="card-footer">
@@ -413,20 +411,24 @@ function refreshAll() {
 
 setInterval(refreshAll, 300000);
 
-// Tabs
+// Tab clicks
 document.getElementById('tabBar').addEventListener('click', e => {
     const btn = e.target.closest('.tab-btn');
     if (!btn) return;
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderGrid(btn.dataset.tab);
+    switchTab(btn.dataset.tab, true);
+});
+
+// Browser back/forward
+window.addEventListener('popstate', e => {
+    const tab = (e.state && e.state.tab) ? e.state.tab : getTabFromURL();
+    switchTab(tab, false);
 });
 
 // Fullscreen
 function openFull(i) {
     idx = i;
     const c = activeCams[i];
-    document.getElementById('oTitle').textContent = label(c);
+    document.getElementById('oTitle').textContent = c.n;
     const camId = typeof c.id === 'number' ? 'CAM #' + c.id : c.id.toUpperCase();
     document.getElementById('oSub').textContent = c.hwy + '  •  ' + camId;
     document.getElementById('oImg').src = imgUrl(c) + '?t=' + Date.now();
@@ -445,7 +447,7 @@ function navFull(e, d) {
     e.stopPropagation();
     idx = (idx + d + activeCams.length) % activeCams.length;
     const c = activeCams[idx];
-    document.getElementById('oTitle').textContent = label(c);
+    document.getElementById('oTitle').textContent = c.n;
     const camId = typeof c.id === 'number' ? 'CAM #' + c.id : c.id.toUpperCase();
     document.getElementById('oSub').textContent = c.hwy + '  •  ' + camId;
     document.getElementById('oImg').src = imgUrl(c) + '?t=' + Date.now();
@@ -459,7 +461,10 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight') navFull(e, 1);
 });
 
-renderGrid('fraser');
+// Initial load — read tab from URL
+const initialTab = getTabFromURL();
+history.replaceState({ tab: initialTab }, '', BASE_PATH + initialTab);
+switchTab(initialTab, false);
 </script>
 </body>
 </html>
