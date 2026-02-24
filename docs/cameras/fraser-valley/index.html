@@ -188,27 +188,24 @@
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
         }
         .overlay.active { display: flex; }
 
         .overlay-content {
-            max-width: 80vw;
-            max-height: 80vh;
             display: flex;
             flex-direction: column;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
             cursor: default;
         }
 
         .overlay-header {
-            width: 100%;
             padding: 12px 20px;
             background: linear-gradient(135deg, #133538, #0f2a30);
-            border-radius: 10px 10px 0 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-shrink: 0;
         }
 
         .overlay-header-left {
@@ -242,31 +239,20 @@
 
         .overlay-img-wrap {
             background: #081418;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            min-height: 0;
-            flex: 1;
+            line-height: 0;
         }
 
         .overlay-img-wrap img {
-            max-width: 100%;
-            max-height: 100%;
             display: block;
-            object-fit: contain;
         }
 
         .overlay-footer {
-            width: 100%;
             padding: 10px 20px;
             background: #112a30;
-            border-radius: 0 0 10px 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            flex-shrink: 0;
         }
 
         .overlay-footer button {
@@ -298,7 +284,6 @@
             header h1 { font-size: 0.95rem; }
             .header-logo { height: 30px; }
             .tab-btn { padding: 8px 14px; font-size: 0.75rem; }
-            .overlay-content { max-width: 95vw; max-height: 85vh; }
             .overlay-title { font-size: 1rem; }
         }
     </style>
@@ -325,7 +310,7 @@
 <div class="camera-grid" id="grid"></div>
 
 <div class="overlay" id="overlay" onclick="closeFull(event)">
-    <div class="overlay-content" onclick="event.stopPropagation()">
+    <div class="overlay-content" id="overlayContent" onclick="event.stopPropagation()">
         <div class="overlay-header">
             <div class="overlay-header-left">
                 <div class="overlay-title" id="oTitle"></div>
@@ -484,12 +469,40 @@ window.addEventListener('popstate', e => {
     switchTab(tab, false);
 });
 
+function sizeOverlay() {
+    const img = document.getElementById('oImg');
+    const content = document.getElementById('overlayContent');
+    const maxW = window.innerWidth * 0.8;
+    const maxH = window.innerHeight * 0.8;
+    const headerFooterH = 100; // approx height of header + footer
+    const maxImgH = maxH - headerFooterH;
+
+    const natW = img.naturalWidth || 640;
+    const natH = img.naturalHeight || 480;
+    const ratio = natW / natH;
+
+    let imgW = maxW;
+    let imgH = imgW / ratio;
+
+    if (imgH > maxImgH) {
+        imgH = maxImgH;
+        imgW = imgH * ratio;
+    }
+
+    content.style.width = imgW + 'px';
+    img.style.width = imgW + 'px';
+    img.style.height = imgH + 'px';
+}
+
 function updateOverlay() {
     const c = activeCams[idx];
     document.getElementById('oTitle').textContent = c.n;
     const camId = typeof c.id === 'number' ? 'CAM #' + c.id : c.id.toUpperCase();
     document.getElementById('oSub').textContent = c.hwy + '  •  ' + camId;
-    document.getElementById('oImg').src = imgUrl(c) + '?t=' + Date.now();
+
+    const img = document.getElementById('oImg');
+    img.onload = sizeOverlay;
+    img.src = imgUrl(c) + '?t=' + Date.now();
     document.getElementById('oCounter').textContent = (idx + 1) + ' / ' + activeCams.length;
 }
 
@@ -513,6 +526,12 @@ function navFull(d) {
     idx = (idx + d + activeCams.length) % activeCams.length;
     updateOverlay();
 }
+
+window.addEventListener('resize', () => {
+    if (document.getElementById('overlay').classList.contains('active')) {
+        sizeOverlay();
+    }
+});
 
 document.addEventListener('keydown', e => {
     const o = document.getElementById('overlay');
