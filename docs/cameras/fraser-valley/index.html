@@ -7,13 +7,11 @@
     <link rel="icon" href="http://github.wjacobs.space/cameras/logos/eam-logo-small.png" type="image/png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             background: #0c1a1f;
             color: #e0e0e0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         header {
             background: linear-gradient(135deg, #0e2328, #091a1e);
             border-bottom: 2px solid #0e8c8c;
@@ -26,15 +24,12 @@
             z-index: 100;
             box-shadow: 0 4px 16px rgba(0,0,0,0.4);
         }
-
         .header-left {
             display: flex;
             align-items: center;
             gap: 14px;
         }
-
         .header-logo { height: 38px; }
-
         header h1 {
             font-size: 1.1rem;
             color: #fff;
@@ -48,7 +43,6 @@
             letter-spacing: 1px;
             text-transform: uppercase;
         }
-
         .btn-refresh {
             padding: 6px 16px;
             background: #0e8c8c;
@@ -61,7 +55,6 @@
             transition: all 0.2s;
         }
         .btn-refresh:hover { background: #10a5a5; transform: translateY(-1px); }
-
         .tab-bar {
             background: #0f2029;
             padding: 0 24px;
@@ -69,7 +62,6 @@
             gap: 0;
             border-bottom: 1px solid #163038;
         }
-
         .tab-btn {
             padding: 10px 24px;
             background: none;
@@ -82,18 +74,15 @@
             transition: all 0.2s;
             white-space: nowrap;
         }
-
         .tab-btn:hover {
             color: #7ab5b5;
             background: rgba(14,140,140,0.05);
         }
-
         .tab-btn.active {
             color: #0fb5b5;
             border-bottom-color: #0e8c8c;
             background: rgba(14,140,140,0.08);
         }
-
         .tab-btn .tab-label {
             display: block;
             font-size: 0.65rem;
@@ -101,9 +90,7 @@
             font-weight: 400;
             margin-top: 1px;
         }
-
         .tab-btn.active .tab-label { color: #0a7070; }
-
         .camera-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
@@ -112,7 +99,6 @@
             max-width: 1600px;
             margin: 0 auto;
         }
-
         .camera-card {
             background: #112a30;
             border-radius: 8px;
@@ -126,7 +112,6 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 24px rgba(14,140,140,0.15);
         }
-
         .card-header {
             padding: 6px 12px;
             display: flex;
@@ -134,16 +119,13 @@
             justify-content: space-between;
             background: linear-gradient(135deg, #133538, #0f2a30);
         }
-
         .card-title {
             display: flex;
             align-items: center;
             gap: 8px;
             min-width: 0;
         }
-
         .cam-icon { font-size: 0.85rem; }
-
         .card-header h3 {
             font-size: 0.8rem;
             font-weight: 600;
@@ -152,23 +134,19 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
         .card-highway {
             font-size: 0.6rem;
             color: #0fb5b5;
             font-weight: 600;
         }
-
         .img-wrap {
             position: relative;
             background: #081418;
         }
-
         .camera-card img {
             width: 100%;
             display: block;
         }
-
         .card-footer {
             padding: 4px 12px;
             font-size: 0.65rem;
@@ -178,7 +156,6 @@
             justify-content: space-between;
             font-family: 'Courier New', monospace;
         }
-
         /* Fullscreen overlay */
         .overlay {
             display: none;
@@ -190,7 +167,6 @@
             justify-content: center;
         }
         .overlay.active { display: flex; }
-
         .overlay-content {
             display: flex;
             flex-direction: column;
@@ -199,7 +175,6 @@
             box-shadow: 0 10px 50px rgba(0,0,0,0.5);
             cursor: default;
         }
-
         .overlay-header {
             padding: 12px 20px;
             background: linear-gradient(135deg, #133538, #0f2a30);
@@ -207,24 +182,20 @@
             align-items: center;
             justify-content: space-between;
         }
-
         .overlay-header-left {
             display: flex;
             flex-direction: column;
             gap: 2px;
         }
-
         .overlay-title {
             color: #fff;
             font-size: 1.15rem;
             font-weight: 600;
         }
-
         .overlay-sub {
             color: #0fb5b5;
             font-size: 0.8rem;
         }
-
         .overlay-close {
             color: #fff;
             font-size: 1.5rem;
@@ -236,16 +207,13 @@
             flex-shrink: 0;
         }
         .overlay-close:hover { background: rgba(14,140,140,0.4); }
-
         .overlay-img-wrap {
             background: #081418;
             line-height: 0;
         }
-
         .overlay-img-wrap img {
             display: block;
         }
-
         .overlay-footer {
             padding: 10px 20px;
             background: #112a30;
@@ -254,7 +222,6 @@
             justify-content: center;
             gap: 10px;
         }
-
         .overlay-footer button {
             padding: 8px 24px;
             background: rgba(14,140,140,0.15);
@@ -266,14 +233,12 @@
             transition: background 0.2s;
         }
         .overlay-footer button:hover { background: rgba(14,140,140,0.3); }
-
         .overlay-counter {
             color: #4e7a7a;
             font-size: 0.8rem;
             min-width: 60px;
             text-align: center;
         }
-
         @media (max-width: 700px) {
             .camera-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -289,7 +254,6 @@
     </style>
 </head>
 <body>
-
 <header>
     <div class="header-left">
         <img src="http://github.wjacobs.space/cameras/logos/eam-logo-small.png" alt="EAM" class="header-logo" onerror="this.style.display='none'">
@@ -300,15 +264,12 @@
     </div>
     <button class="btn-refresh" onclick="refreshAll()">⟳ Refresh</button>
 </header>
-
 <div class="tab-bar" id="tabBar">
     <button class="tab-btn" data-tab="fraser-valley">SA 7 — Fraser Valley<span class="tab-label">17 cameras</span></button>
     <button class="tab-btn" data-tab="robson">SA 20 — Robson<span class="tab-label">10 cameras</span></button>
     <button class="tab-btn" data-tab="skeena">SA 26 — Skeena<span class="tab-label">15 cameras</span></button>
 </div>
-
 <div class="camera-grid" id="grid"></div>
-
 <div class="overlay" id="overlay" onclick="closeFull(event)">
     <div class="overlay-content" id="overlayContent" onclick="event.stopPropagation()">
         <div class="overlay-header">
@@ -328,10 +289,8 @@
         </div>
     </div>
 </div>
-
 <script>
 const BASE_PATH = '/cameras/';
-
 const areas = {
     'fraser-valley': [
         { n:"Bridal Falls - E", hwy:"Hwy 1", id:240 },
@@ -382,50 +341,40 @@ const areas = {
         { n:"New Hazelton", hwy:"Hwy 16", id:378 }
     ]
 };
-
 const tabTitles = {
     'fraser-valley': 'Fraser Valley',
     'robson': 'Robson',
     'skeena': 'Skeena'
 };
-
 let activeTab = '';
 let activeCams = [];
 let idx = -1;
 const grid = document.getElementById('grid');
-
 function imgUrl(c) {
     if (c.url) return c.url;
-    return `https://images.drivebc.ca/bchighwaycam/pub/cameras/${c.id}.jpg`;
+    return `https://www.drivebc.ca/images/${c.id}.jpg`;
 }
-
 function getTabFromURL() {
     const path = window.location.pathname.replace(BASE_PATH, '').replace(/\/$/, '');
     if (areas[path]) return path;
     return 'fraser-valley';
 }
-
 function switchTab(tab, pushState) {
     if (!areas[tab]) tab = 'fraser-valley';
     activeTab = tab;
     activeCams = areas[tab];
-
     if (pushState) {
         history.pushState({ tab: tab }, '', BASE_PATH + tab);
     }
-
     document.title = `EAM Cameras — ${tabTitles[tab]}`;
-
     document.querySelectorAll('.tab-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.tab === tab);
     });
-
     grid.innerHTML = '';
     activeCams.forEach((c, i) => {
         const card = document.createElement('div');
         card.className = 'camera-card';
         const camId = typeof c.id === 'number' ? `CAM #${c.id}` : c.id.toUpperCase();
-
         card.innerHTML = `
             <div class="card-header">
                 <div class="card-title">
@@ -448,91 +397,74 @@ function switchTab(tab, pushState) {
         grid.appendChild(card);
     });
 }
-
 function refreshAll() {
     document.querySelectorAll('.camera-card img').forEach((img, i) => {
         img.src = imgUrl(activeCams[i]) + '?t=' + Date.now();
         img.style.opacity = '';
     });
 }
-
 setInterval(refreshAll, 300000);
-
 document.getElementById('tabBar').addEventListener('click', e => {
     const btn = e.target.closest('.tab-btn');
     if (!btn) return;
     switchTab(btn.dataset.tab, true);
 });
-
 window.addEventListener('popstate', e => {
     const tab = (e.state && e.state.tab) ? e.state.tab : getTabFromURL();
     switchTab(tab, false);
 });
-
 function sizeOverlay() {
     const img = document.getElementById('oImg');
     const content = document.getElementById('overlayContent');
     const maxW = window.innerWidth * 0.8;
     const maxH = window.innerHeight * 0.8;
-    const headerFooterH = 100; // approx height of header + footer
+    const headerFooterH = 100;
     const maxImgH = maxH - headerFooterH;
-
     const natW = img.naturalWidth || 640;
     const natH = img.naturalHeight || 480;
     const ratio = natW / natH;
-
     let imgW = maxW;
     let imgH = imgW / ratio;
-
     if (imgH > maxImgH) {
         imgH = maxImgH;
         imgW = imgH * ratio;
     }
-
     content.style.width = imgW + 'px';
     img.style.width = imgW + 'px';
     img.style.height = imgH + 'px';
 }
-
 function updateOverlay() {
     const c = activeCams[idx];
     document.getElementById('oTitle').textContent = c.n;
     const camId = typeof c.id === 'number' ? 'CAM #' + c.id : c.id.toUpperCase();
     document.getElementById('oSub').textContent = c.hwy + '  •  ' + camId;
-
     const img = document.getElementById('oImg');
     img.onload = sizeOverlay;
     img.src = imgUrl(c) + '?t=' + Date.now();
     document.getElementById('oCounter').textContent = (idx + 1) + ' / ' + activeCams.length;
 }
-
 function openFull(i) {
     idx = i;
     updateOverlay();
     document.getElementById('overlay').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
-
 function forceClose() {
     document.getElementById('overlay').classList.remove('active');
     document.body.style.overflow = '';
 }
-
 function closeFull(e) {
     if (e.target.id === 'overlay') forceClose();
 }
-
 function navFull(d) {
     idx = (idx + d + activeCams.length) % activeCams.length;
     updateOverlay();
 }
-
 window.addEventListener('resize', () => {
     if (document.getElementById('overlay').classList.contains('active')) {
         sizeOverlay();
     }
 });
-
 document.addEventListener('keydown', e => {
     const o = document.getElementById('overlay');
     if (!o.classList.contains('active')) return;
@@ -540,7 +472,6 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft') navFull(-1);
     if (e.key === 'ArrowRight') navFull(1);
 });
-
 const initialTab = getTabFromURL();
 history.replaceState({ tab: initialTab }, '', BASE_PATH + initialTab);
 switchTab(initialTab, false);
